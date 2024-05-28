@@ -32,6 +32,23 @@ class Blockchain {
     newBlock.hash = newBlock.calculateHash();
     this.chain.push(newBlock);
   }
+
+  isChainValid() {
+    for(let i = 0; i < this.chain.length; i++) {
+      const currentBlock = this.chain[i];
+      const previousBlock = this.chain[i - 1];
+
+      if(currentBlock.hash !== currentBlock.calculateHash()) {
+        return false;
+      }
+
+      if(currentBlock.previousHash !== previousBlock.hash) {
+        return false;
+      }
+    }
+
+    return true;
+  }
 }
 
 // test of our chain
@@ -41,3 +58,5 @@ testCoin.addBlock(new Block(1, "19/05/2024", { amount: 4 }));
 testCoin.addBlock(new Block(2, "20/05/2024", { amount: 9 }));
 
 console.log(JSON.stringify(testCoin, null, 4));
+
+console.log('Test if blockchain is valid: ', testCoin.isChainValid());
