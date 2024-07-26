@@ -75,6 +75,24 @@ class Blockchain {
     this.pendingTransactions.push(transaction);
   }
 
+  getBalanceOfAddress(address) {
+    let balance = 0;
+
+    for(const block of this.chain) {
+      for(const transaction of block.transactions) {
+        if(transaction.fromAddress === address) {
+          balance -= transaction.amount;
+        }
+
+        if(transaction.toAddress === address) {
+          balance += transaction.amount;
+        }
+      }
+    }
+
+    return balance;
+  }
+
   isChainValid() {
     for(let i = 0; i < this.chain.length; i++) {
       const currentBlock = this.chain[i];
